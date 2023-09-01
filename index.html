@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>amoCRM Data</title>
+    <style>
+        .project {
+            float: left;
+            color: white; /* Имена менеджеров в белом цвете */
+            font-family: Calibri;
+        }
+        .sum {
+            float: right;
+            color: greenyellow; /* Суммы сделок в зелёном цвете */
+            font-family: Calibri;
+        }
+        li {
+            clear: both;
+            list-style-type: none; /* Убираем маркеры списка */
+            padding: 10px; /* Добавляем немного отступов для лучшего визуального восприятия */
+            margin-bottom: 15px; /* Добавляем немного отступа между пунктами списка */
+        }
+        .title {
+            font-size: 15px; /* Размер шрифта для заголовка "Суммы сделок по менеджерам" */
+            color: white;
+            text-align: left; /* Выравнивание по центру */
+            margin-top: 11px; /* Добавляем отступ сверху */
+            margin-bottom: 19px; /* Добавляем отступ снизу */
+            font-family: Calibri;
+            font-weight: bold; /* Добавляем жирный шрифт */
+        }
+        .progress-container {
+            position: relative;
+            width: 100%;
+            height: 7px;
+            background-color: #041c30;
+            margin-top: 5px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #ffd66d;
+            width: 0;
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+
+        /* Меняем высоту полоски прогресса */
+        .thin-progress {
+            height: 50%;
+        }
+        .project-and-sum {
+            display: flex; /* Используем flexbox для выравнивания элементов внутри */
+            align-items: center; /* Выравнивание по вертикали */
+            justify-content: space-between; /* Распределение между элементами */
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="resultsPlaceholder"></div>
+<script>
+    function loadPHPResults() {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                document.getElementById("resultsPlaceholder").innerHTML = xhr.responseText;
+                updateProgressWidths(); // Вызываем функцию для обновления ширин полосок прогресса
+            }
+        };
+        xhr.open("GET", "123/widget.php", true);
+        xhr.send();
+    }
+    function updateProgressWidths() {
+        const progressDivs = document.querySelectorAll('.progress');
+        progressDivs.forEach(progressDiv => {
+            const width = progressDiv.style.width;
+            const numericWidth = parseInt(width);
+            if (!isNaN(numericWidth) && numericWidth > 100) {
+                progressDiv.style.width = '100%';
+            }
+        });
+    }
+    // Вызов функции для загрузки результатов при загрузке страницы
+    loadPHPResults();
+</script>
+</body>
+</html>
